@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowDownRight,
@@ -13,6 +13,7 @@ import {
 
 import { sets } from "../data/sets";
 import DailyWheel from "./DailyWheel";
+import { supabase } from "../lib/supabase";
 
 const filters = ["ALL", "RIFLES", "KNIVES", "GLOVES"];
 
@@ -28,6 +29,35 @@ const fadeUp = {
 export default function HomePage() {
   const [activeFilter, setActiveFilter] = useState("ALL");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  // Проверяем авторизацию и отслеживаем вход/выход
+  useEffect(() => {
+    let mounted = true;
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (mounted) {
+        setUser(session?.user ?? null);
+      }
+    });
+
+    async function loadUser() {
+      const { data, error } = await supabase.auth.getSession();
+
+      if (mounted && !error) {
+        setUser(data.session?.user ?? null);
+      }
+    }
+
+    loadUser();
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const filteredSets =
     activeFilter === "ALL"
@@ -53,10 +83,21 @@ export default function HomePage() {
           <a href="#about" onClick={closeMenu}>ABOUT</a>
         </nav>
 
-        <a href="#archive" className="header-cta">
-          EXPLORE ARCHIVE
-          <ArrowUpRight size={15} />
-        </a>
+        <div className="header-actions">
+          <a href="#archive" className="header-cta">
+            EXPLORE ARCHIVE
+            <ArrowUpRight size={15} />
+          </a>
+
+          <a
+            href={user ? "/profile" : "/login"}
+            className="header-login"
+            onClick={closeMenu}
+          >
+            {user ? "PROFILE" : "LOG IN"}
+            <span>↗</span>
+          </a>
+        </div>
 
         <button
           className="mobile-menu"
