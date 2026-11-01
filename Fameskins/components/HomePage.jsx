@@ -2,40 +2,26 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowDownRight,
   ArrowUpRight,
   Menu,
   X,
-  LogIn,
+  Play,
 } from "lucide-react";
 
 import { sets } from "../data/sets";
+import DailyWheel from "./DailyWheel";
 
-const filters = [
-  { value: "ALL", label: "Все коллекции" },
-  { value: "RIFLES", label: "Винтовки" },
-  { value: "KNIVES", label: "Ножи" },
-  { value: "GLOVES", label: "Перчатки" },
-];
-
-const categoryLabels = {
-  RIFLES: "ВИНТОВКИ",
-  KNIVES: "НОЖИ",
-  GLOVES: "ПЕРЧАТКИ",
-};
+const filters = ["ALL", "RIFLES", "KNIVES", "GLOVES"];
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 22 },
+  hidden: { opacity: 0, y: 35 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.55,
-      ease: [0.22, 1, 0.36, 1],
-    },
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
@@ -52,55 +38,41 @@ export default function HomePage() {
 
   return (
     <main>
-      {/* ШАПКА */}
+      {/* NAVIGATION */}
 
-      <header className="site-header" id="top">
-        <Link href="/" className="brand" onClick={closeMenu}>
+      <header className="site-header">
+        <a href="#top" className="brand" onClick={closeMenu}>
           FAME<span>SKINS</span>
           <i>.</i>
-        </Link>
+        </a>
 
         <nav className={menuOpen ? "nav-links nav-open" : "nav-links"}>
-          <a href="#archive" onClick={closeMenu}>
-            КОЛЛЕКЦИИ
-          </a>
-          <a href="#players" onClick={closeMenu}>
-            ИГРОКИ
-          </a>
-          <a href="#media" onClick={closeMenu}>
-            МЕДИА
-          </a>
-          <a href="#about" onClick={closeMenu}>
-            О ПРОЕКТЕ
-          </a>
+          <a href="#archive" onClick={closeMenu}>ARCHIVE</a>
+          <a href="#players" onClick={closeMenu}>PLAYERS</a>
+          <a href="#media" onClick={closeMenu}>MEDIA</a>
+          <a href="#about" onClick={closeMenu}>ABOUT</a>
         </nav>
 
-        <div className="header-actions">
-          <a href="#archive" className="header-cta">
-            К КОЛЛЕКЦИЯМ
-            <ArrowUpRight size={15} />
-          </a>
-
-          <Link href="/login" className="header-login">
-            <LogIn size={15} />
-            ВОЙТИ
-          </Link>
-        </div>
+        <a href="#archive" className="header-cta">
+          EXPLORE ARCHIVE
+          <ArrowUpRight size={15} />
+        </a>
 
         <button
           className="mobile-menu"
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label={menuOpen ? "Закрыть меню" : "Открыть меню"}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
           aria-expanded={menuOpen}
-          type="button"
         >
           {menuOpen ? <X size={23} /> : <Menu size={23} />}
         </button>
       </header>
 
-      {/* ПЕРВЫЙ ЭКРАН */}
+      {/* HERO */}
 
-      <section className="hero" id="home">
+      <section className="hero" id="top">
+        <div className="hero-noise" />
+
         <div className="hero-content">
           <motion.div
             className="eyebrow"
@@ -109,19 +81,19 @@ export default function HomePage() {
             variants={fadeUp}
           >
             <span className="status-dot" />
-            АРХИВ ПРОФЕССИОНАЛЬНОЙ СЦЕНЫ
-            <span className="eyebrow-year">2026</span>
+            THE PRO SCENE ARCHIVE
+            <span className="eyebrow-year">EST. 2026</span>
           </motion.div>
 
           <motion.h1
             initial="hidden"
             animate="visible"
             variants={fadeUp}
-            transition={{ delay: 0.1 }}
+            transition={{ delay: 0.12 }}
           >
-            ИГРА.
+            THE GAME
             <br />
-            ЕЁ <span>ЛЕГЕНДЫ.</span>
+            HAS ITS <span>ICONS.</span>
           </motion.h1>
 
           <motion.p
@@ -129,11 +101,11 @@ export default function HomePage() {
             initial="hidden"
             animate="visible"
             variants={fadeUp}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.23 }}
           >
-            Коллекции скинов профессиональных игроков CS2.
-            Изучай предметы, узнавай истории их появления
-            на про-сцене и находи вдохновение в деталях.
+            Explore the loadouts behind the legends.
+            Discover iconic CS2 skins, professional players
+            and the moments that made them unforgettable.
           </motion.p>
 
           <motion.div
@@ -141,15 +113,15 @@ export default function HomePage() {
             initial="hidden"
             animate="visible"
             variants={fadeUp}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.34 }}
           >
             <a href="#archive" className="button-primary">
-              СМОТРЕТЬ КОЛЛЕКЦИИ
+              DISCOVER THE ARCHIVE
               <ArrowUpRight size={17} />
             </a>
 
             <a href="#about" className="button-text">
-              О ПРОЕКТЕ
+              OUR CONCEPT
               <ArrowDownRight size={16} />
             </a>
           </motion.div>
@@ -158,24 +130,24 @@ export default function HomePage() {
             className="hero-bottom-info"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
+            transition={{ delay: 0.7, duration: 1 }}
           >
             <span>COUNTER-STRIKE 2</span>
-            <span>ПРЕДМЕТЫ / ИГРОКИ / ИСТОРИЯ</span>
+            <span>LOADOUTS / PLAYERS / HISTORY</span>
           </motion.div>
         </div>
 
-        {/* ВИЗУАЛЬНЫЙ БЛОК */}
+        {/* HERO VISUAL */}
 
         <motion.div
           className="hero-visual"
-          initial={{ opacity: 0, x: 25 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          initial={{ opacity: 0, x: 45, scale: 0.96 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          transition={{ duration: 1, delay: 0.25 }}
         >
           <div className="hero-visual-top">
-            <span>01 / АРХИВ</span>
-            <span>ПРЕДПРОСМОТР</span>
+            <span>01 / VISUAL ARCHIVE</span>
+            <span>PREVIEW MODULE</span>
           </div>
 
           <div className="hero-art">
@@ -194,14 +166,14 @@ export default function HomePage() {
 
             <div className="art-watermark">FS</div>
 
-            <span className="art-index">ЭКСПОНАТ 001</span>
-            <span className="art-coordinate">FAMESKINS / 2026</span>
+            <span className="art-index">FIG. 001</span>
+            <span className="art-coordinate">48° / 02° / 26</span>
           </div>
 
           <div className="hero-visual-bottom">
             <div>
-              <span className="mini-label">КОЛЛЕКЦИЯ FAMESKINS</span>
-              <h3>БОЛЬШЕ, ЧЕМ ИГРА.</h3>
+              <span className="mini-label">THE COLLECTION</span>
+              <h3>BEYOND THE GAME.</h3>
             </div>
 
             <div className="visual-arrow">
@@ -209,26 +181,32 @@ export default function HomePage() {
             </div>
           </div>
         </motion.div>
+
+        <div className="hero-side-label">FAMESKINS / VOL. 001</div>
       </section>
 
-      {/* БЕГУЩАЯ СТРОКА */}
+      {/* MARQUEE */}
 
       <div className="marquee">
         <div className="marquee-track">
           {Array.from({ length: 4 }).map((_, index) => (
             <div className="marquee-content" key={index}>
-              <span>КОЛЛЕКЦИИ ПРО-ИГРОКОВ</span>
+              <span>PRO PLAYER LOADOUTS</span>
               <i>✳</i>
-              <span>КУЛЬТУРА CS2</span>
+              <span>ESPORTS CULTURE</span>
               <i>✳</i>
-              <span>ИСТОРИЯ КИБЕРСПОРТА</span>
+              <span>ICONIC MOMENTS</span>
               <i>✳</i>
             </div>
           ))}
         </div>
       </div>
 
-      {/* КОЛЛЕКЦИИ */}
+      {/* DAILY REWARDS WHEEL */}
+
+      <DailyWheel />
+
+      {/* ARCHIVE */}
 
       <section className="archive-section section-wrap" id="archive">
         <motion.div
@@ -239,36 +217,34 @@ export default function HomePage() {
           variants={fadeUp}
         >
           <div>
-            <span className="section-kicker">01 — КОЛЛЕКЦИЯ</span>
+            <span className="section-kicker">01 — THE COLLECTION</span>
             <h2>
-              НАШ <span>АРХИВ.</span>
+              THE <span>ARCHIVE.</span>
             </h2>
           </div>
 
           <p>
-            Не просто скины.
+            Not just skins.
             <br />
-            Часть истории профессиональной сцены.
+            A part of competitive history.
           </p>
         </motion.div>
 
         <div className="archive-toolbar">
-          <span className="toolbar-label">ВЫБЕРИ КАТЕГОРИЮ</span>
+          <span className="toolbar-label">BROWSE BY CATEGORY</span>
 
           <div className="filter-list">
             {filters.map((filter) => (
               <button
-                key={filter.value}
-                type="button"
+                key={filter}
                 className={
-                  activeFilter === filter.value
+                  activeFilter === filter
                     ? "filter-button active"
                     : "filter-button"
                 }
-                onClick={() => setActiveFilter(filter.value)}
-                aria-pressed={activeFilter === filter.value}
+                onClick={() => setActiveFilter(filter)}
               >
-                {filter.label}
+                {filter}
               </button>
             ))}
           </div>
@@ -281,12 +257,12 @@ export default function HomePage() {
                 layout
                 key={set.id}
                 className="set-card"
-                initial={{ opacity: 0, y: 18 }}
+                initial={{ opacity: 0, y: 25 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.97 }}
-                transition={{ duration: 0.3, delay: index * 0.04 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.35, delay: index * 0.06 }}
               >
-                <div className="set-card-link">
+                <a className="set-card-link" href="#media">
                   <div className={`set-art ${set.visual}`}>
                     <div className="set-art-grid" />
                     <div className="set-art-orbit" />
@@ -296,45 +272,45 @@ export default function HomePage() {
                     </div>
 
                     <span className="set-art-type">
-                      {categoryLabels[set.category] || set.category}
+                      {set.category}
                     </span>
 
-                    <span className="set-art-status">{set.status}</span>
+                    <span className="set-art-status">
+                      {set.status}
+                    </span>
                   </div>
 
                   <div className="set-info">
                     <div>
                       <span className="set-number">
-                        КОЛЛЕКЦИЯ / {set.code}
+                        ENTRY / {set.code}
                       </span>
-
                       <h3>{set.name}</h3>
-
                       <p>{set.description}</p>
                     </div>
 
-                    <div className="set-card-arrow" aria-hidden="true">
+                    <div className="set-card-arrow">
                       <ArrowUpRight size={19} />
                     </div>
                   </div>
 
                   <div className="set-card-footer">
                     <span>{set.items}</span>
-                    <span>СКОРО</span>
+                    <span>EXPLORE ENTRY ↗</span>
                   </div>
-                </div>
+                </a>
               </motion.article>
             ))}
           </AnimatePresence>
         </motion.div>
 
         <div className="archive-bottom">
-          <span>КОЛЛЕКЦИЙ ПОКАЗАНО: {filteredSets.length}</span>
-          <span>НОВЫЕ КОЛЛЕКЦИИ БУДУТ ДОБАВЛЯТЬСЯ</span>
+          <span>SHOWING {filteredSets.length} DESIGN ENTRIES</span>
+          <span>MORE STORIES TO COME</span>
         </div>
       </section>
 
-      {/* МЕДИА */}
+      {/* MEDIA */}
 
       <section className="media-section" id="media">
         <div className="media-inner section-wrap">
@@ -345,36 +321,35 @@ export default function HomePage() {
             viewport={{ once: true }}
             variants={fadeUp}
           >
-            <span className="section-kicker">02 — ЗА КАДРОМ</span>
-
+            <span className="section-kicker">02 — BEHIND THE MOMENT</span>
             <h2>
-              НЕ ТОЛЬКО
+              NOT JUST
               <br />
-              <span>ВНЕШНИЙ ВИД.</span>
+              <span>THE LOOK.</span>
             </h2>
 
             <p>
-              За каждой известной коллекцией стоит своя история:
-              игрок, матч и момент, который запомнили зрители.
-              Здесь мы собираем всё воедино.
+              Every legendary loadout has a story.
+              The match, the player, the moment.
+              Experience it beyond a static screenshot.
             </p>
 
             <a href="#players" className="button-outline">
-              ИСТОРИИ ИГРОКОВ
+              DISCOVER THE STORIES
               <ArrowUpRight size={16} />
             </a>
           </motion.div>
 
           <motion.div
             className="media-player"
-            initial={{ opacity: 0, scale: 0.97 }}
+            initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
           >
             <div className="media-player-top">
-              <span>FAMESKINS / МЕДИААРХИВ</span>
-              <span>РАЗДЕЛ 001</span>
+              <span>FAMESKINS / MEDIA ARCHIVE</span>
+              <span>VIDEO MODULE 001</span>
             </div>
 
             <div className="media-screen">
@@ -382,24 +357,27 @@ export default function HomePage() {
               <div className="media-light" />
 
               <div className="media-placeholder">
-                <span>ИСТОРИЯ КАЖДОГО ПРЕДМЕТА</span>
-                <strong>ВАЖЕН КАЖДЫЙ МОМЕНТ.</strong>
+                <span>THE MOMENT</span>
+                <strong>IS EVERYTHING.</strong>
+                <div className="media-play">
+                  <Play size={19} fill="currentColor" />
+                </div>
               </div>
 
               <span className="media-screen-label">
-                ВИДЕО И МАТЕРИАЛЫ ПОЯВЯТСЯ ПОЗЖЕ
+                GAMEPLAY FOOTAGE / COMING SOON
               </span>
             </div>
 
             <div className="media-player-bottom">
-              <span>CS2 / ПРОФЕССИОНАЛЬНАЯ СЦЕНА</span>
-              <span>МЕДИААРХИВ</span>
+              <span>CS2 / COMPETITIVE ARCHIVE</span>
+              <span>MEDIA SLOT 001</span>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* ИГРОКИ */}
+      {/* PLAYERS */}
 
       <section className="players-section section-wrap" id="players">
         <motion.div
@@ -409,37 +387,36 @@ export default function HomePage() {
           viewport={{ once: true }}
           variants={fadeUp}
         >
-          <span className="section-kicker">03 — ЛЮДИ</span>
-
+          <span className="section-kicker">03 — THE PEOPLE</span>
           <h2>
-            ЗА НИМИ
+            MADE BY
             <br />
-            <span>СТОЯТ ЛЕГЕНДЫ.</span>
+            <span>LEGENDS.</span>
           </h2>
 
           <p>
-            За каждым узнаваемым сетом стоит игрок.
-            Мы связываем предметы с профессионалами,
-            матчами и турнирами, на которых они появлялись.
+            Behind every iconic set is a player.
+            We connect the skins, the people and the
+            moments from the professional stage.
           </p>
 
           <div className="players-index">
             <div>
               <span>01</span>
-              <strong>ПРОФИЛИ ИГРОКОВ</strong>
-              <span>ИГРОКИ</span>
+              <strong>PLAYER PROFILES</strong>
+              <span>PLAYER ARCHIVE</span>
             </div>
 
             <div>
               <span>02</span>
-              <strong>ИСТОРИЯ МАТЧЕЙ</strong>
-              <span>ТУРНИРЫ</span>
+              <strong>MATCH HISTORY</strong>
+              <span>EVENT REFERENCES</span>
             </div>
 
             <div>
               <span>03</span>
-              <strong>ЗНАКОВЫЕ КОЛЛЕКЦИИ</strong>
-              <span>ПРЕДМЕТЫ</span>
+              <strong>ICONIC LOADOUTS</strong>
+              <span>SET COLLECTIONS</span>
             </div>
           </div>
         </motion.div>
@@ -448,47 +425,47 @@ export default function HomePage() {
           <div className="player-monogram">PRO</div>
           <div className="player-orbit player-orbit-one" />
           <div className="player-orbit player-orbit-two" />
-          <span className="player-visual-label">ИСТОРИЯ ПРО-СЦЕНЫ</span>
+          <span className="player-visual-label">THE STAGE IS YOURS.</span>
           <span className="player-visual-number">03 / 03</span>
         </div>
       </section>
 
-      {/* О ПРОЕКТЕ */}
+      {/* ABOUT */}
 
       <section className="about-section" id="about">
         <div className="section-wrap about-inner">
-          <span className="section-kicker">04 — НАША ИДЕЯ</span>
+          <span className="section-kicker">04 — OUR PHILOSOPHY</span>
 
           <h2>
-            НЕКОТОРЫЕ СКИНЫ —
+            SOME SKINS ARE
             <br />
-            <span>БОЛЬШЕ, ЧЕМ СКИНЫ.</span>
+            <span>MORE THAN SKINS.</span>
           </h2>
 
           <div className="about-bottom">
             <p>
-              FAMESKINS — цифровой архив, посвящённый визуальной
-              культуре профессионального Counter-Strike.
-              Предметы, игроки и моменты, которые оставили
-              свой след в истории киберспорта.
+              FAMESKINS is a digital archive celebrating the
+              visual identity of competitive Counter-Strike.
+              The equipment, the players and the moments
+              that define esports culture.
             </p>
 
             <a href="#top" className="back-to-top">
-              НАВЕРХ
+              BACK TO TOP
               <ArrowUpRight size={17} />
             </a>
           </div>
         </div>
       </section>
 
-      {/* ПОДВАЛ */}
+      {/* FOOTER */}
 
       <footer className="site-footer">
-        <Link href="/" className="footer-brand">
+        <a href="#top" className="footer-brand">
           FAME<span>SKINS</span>.
-        </Link>
+        </a>
 
-        <span>НЕЗАВИСИМЫЙ АРХИВ КУЛЬТУРЫ CS2</span>
+        <span>INDEPENDENT CS2 CULTURE ARCHIVE</span>
         <span>© 2026 FAMESKINS</span>
       </footer>
     </main>
